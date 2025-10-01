@@ -38,6 +38,12 @@
 #define MENU_EXIT 8
 #define MENU_BACK 0
 
+#if defined(_WIN32) || defined(_WIN64)
+    #define strcasecmp _stricmp
+#else
+    #include <strings.h> // for macOS/Linux
+#endif
+
 // Record structure (4 columns)
 typedef struct {
     char inspectionID[ID_REG_BUFFER_LEN];
@@ -47,8 +53,6 @@ typedef struct {
 } Record;
 
 /* ---------- Validation helpers ---------- */
-
-// Removed to_lower_str as it will be replaced by _stricmp
 
 // return 1 if character allowed in ID/Reg (letters and digits)
 int is_alnum_char(char c) {
@@ -713,4 +717,3 @@ int main() {
     }
     return 0;
 }
-
