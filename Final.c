@@ -446,75 +446,89 @@ void update_record() {
     char in[INPUT_BUFFER_SIZE];
 
     // InspectionID - if change, must validate and unique
-    printf("New InspectionID (enter to keep current '%s', or 0 to back): ", arr[idx].inspectionID);
-    if (!fgets(in, sizeof(in), stdin)) return;
-    // trim newline
-    size_t L = strlen(in);
-    if (L > 0 && (in[L - 1] == '\n' || in[L - 1] == '\r')) in[--L] = 0;
-    if (strcmp(in, "0") == 0) return;
-    if (strlen(in) > 0) {
-        if (!is_valid_id_or_reg(in)) {
-            printf("Invalid format; update aborted.\n");
-            return;
+    while (1) {
+        printf("New InspectionID (enter to keep current '%s', or 0 to back): ", arr[idx].inspectionID);
+        if (!fgets(in, sizeof(in), stdin)) return;
+        size_t L = strlen(in);
+        if (L > 0 && (in[L - 1] == '\n' || in[L - 1] == '\r')) in[--L] = 0;
+        if (strcmp(in, "0") == 0) return;
+
+        if (strlen(in) > 0) { // User entered something
+            if (!is_valid_id_or_reg(in)) {
+                printf("Invalid ID format. Use letters and digits only (1-%d chars).\n", ID_REG_MAX_LEN);
+                continue; // Ask again
+            }
+            int conflict = find_by_id_or_reg(arr, n, in);
+            if (conflict != -1 && conflict != idx) {
+                printf("This InspectionID (or CarReg) already exists. Choose another.\n");
+                continue; // Ask again
+            }
+            strncpy(arr[idx].inspectionID, in, sizeof(arr[idx].inspectionID) - 1);
+            arr[idx].inspectionID[sizeof(arr[idx].inspectionID) - 1] = 0;
         }
-        // ensure unique (except itself, case-insensitive)
-        int conflict = find_by_id_or_reg(arr, n, in);
-        if (conflict != -1 && conflict != idx) {
-            printf("ID conflict; update aborted.\n");
-            return;
-        }
-        strncpy(arr[idx].inspectionID, in, sizeof(arr[idx].inspectionID) - 1);
-        arr[idx].inspectionID[sizeof(arr[idx].inspectionID) - 1] = 0;
+        break; // Valid input or kept current, break out of loop
     }
 
     // CarReg
-    printf("New CarReg (enter to keep current '%s', or 0 to back): ", arr[idx].carReg);
-    if (!fgets(in, sizeof(in), stdin)) return;
-    L = strlen(in);
-    if (L > 0 && (in[L - 1] == '\n' || in[L - 1] == '\r')) in[--L] = 0;
-    if (strcmp(in, "0") == 0) return;
-    if (strlen(in) > 0) {
-        if (!is_valid_id_or_reg(in)) {
-            printf("Invalid format; update aborted.\n");
-            return;
+    while (1) {
+        printf("New CarReg (enter to keep current '%s', or 0 to back): ", arr[idx].carReg);
+        if (!fgets(in, sizeof(in), stdin)) return;
+        size_t L = strlen(in);
+        if (L > 0 && (in[L - 1] == '\n' || in[L - 1] == '\r')) in[--L] = 0;
+        if (strcmp(in, "0") == 0) return;
+
+        if (strlen(in) > 0) {
+            if (!is_valid_id_or_reg(in)) {
+                printf("Invalid CarReg format. Use letters and digits only (1-%d chars).\n", ID_REG_MAX_LEN);
+                continue;
+            }
+            int conflict = find_by_id_or_reg(arr, n, in);
+            if (conflict != -1 && conflict != idx) {
+                printf("This InspectionID (or CarReg) already exists. Choose another.\n");
+                continue;
+            }
+            strncpy(arr[idx].carReg, in, sizeof(arr[idx].carReg) - 1);
+            arr[idx].carReg[sizeof(arr[idx].carReg) - 1] = 0;
         }
-        int conflict = find_by_id_or_reg(arr, n, in);
-        if (conflict != -1 && conflict != idx) {
-            printf("CarReg conflict; update aborted.\n");
-            return;
-        }
-        strncpy(arr[idx].carReg, in, sizeof(arr[idx].carReg) - 1);
-        arr[idx].carReg[sizeof(arr[idx].carReg) - 1] = 0;
+        break;
     }
 
     // Owner
-    printf("New Owner (enter to keep current '%s', or 0 to back): ", arr[idx].owner);
-    if (!fgets(in, sizeof(in), stdin)) return;
-    L = strlen(in);
-    if (L > 0 && (in[L - 1] == '\n' || in[L - 1] == '\r')) in[--L] = 0;
-    if (strcmp(in, "0") == 0) return;
-    if (strlen(in) > 0) {
-        if (!is_valid_owner_name(in)) {
-            printf("Invalid owner name; update aborted.\n");
-            return;
+    while (1) {
+        printf("New Owner (enter to keep current '%s', or 0 to back): ", arr[idx].owner);
+        if (!fgets(in, sizeof(in), stdin)) return;
+        size_t L = strlen(in);
+        if (L > 0 && (in[L - 1] == '\n' || in[L - 1] == '\r')) in[--L] = 0;
+        if (strcmp(in, "0") == 0) return;
+
+        if (strlen(in) > 0) {
+            if (!is_valid_owner_name(in)) {
+                printf("Invalid owner name. Use letters and spaces only (1-%d chars).\n", OWNER_MAX_LEN);
+                continue;
+            }
+            strncpy(arr[idx].owner, in, sizeof(arr[idx].owner) - 1);
+            arr[idx].owner[sizeof(arr[idx].owner) - 1] = 0;
         }
-        strncpy(arr[idx].owner, in, sizeof(arr[idx].owner) - 1);
-        arr[idx].owner[sizeof(arr[idx].owner) - 1] = 0;
+        break;
     }
 
     // Date
-    printf("New Date (DD/MM/YYYY) (enter to keep current '%s', or 0 to back): ", arr[idx].date);
-    if (!fgets(in, sizeof(in), stdin)) return;
-    L = strlen(in);
-    if (L > 0 && (in[L - 1] == '\n' || in[L - 1] == '\r')) in[--L] = 0;
-    if (strcmp(in, "0") == 0) return;
-    if (strlen(in) > 0) {
-        if (!is_valid_date(in)) {
-            printf("Invalid date; update aborted.\n");
-            return;
+    while (1) {
+        printf("New Date (DD/MM/YYYY) (enter to keep current '%s', or 0 to back): ", arr[idx].date);
+        if (!fgets(in, sizeof(in), stdin)) return;
+        size_t L = strlen(in);
+        if (L > 0 && (in[L - 1] == '\n' || in[L - 1] == '\r')) in[--L] = 0;
+        if (strcmp(in, "0") == 0) return;
+
+        if (strlen(in) > 0) {
+            if (!is_valid_date(in)) {
+                printf("Invalid date. Ensure format DD/MM/YYYY and valid day/month/year range.\n");
+                continue;
+            }
+            strncpy(arr[idx].date, in, sizeof(arr[idx].date) - 1);
+            arr[idx].date[sizeof(arr[idx].date) - 1] = 0;
         }
-        strncpy(arr[idx].date, in, sizeof(arr[idx].date) - 1);
-        arr[idx].date[sizeof(arr[idx].date) - 1] = 0;
+        break;
     }
 
     if (save_all(arr, n)) printf("Record updated and saved.\n");
@@ -657,7 +671,7 @@ void e2e_test() {
         printf(" -> E2E Test PASSED\n");
 
         // Cleanup: remove the added record
-        for (int i = idx; i < m - 1; ++i) arr2[i] = arr2[i + 1];
+       for (int i = idx; i < m - 1; ++i) arr2[i] = arr2[i + 1];
         save_all(arr2, m - 1);
     } else {
         printf(" -> could not find test record after reload!\n");
@@ -666,7 +680,6 @@ void e2e_test() {
 
     printf("E2E test finished\n");
 }
-
 /* ---------- Menu and main ---------- */
 
 void unit_test_menu() {
@@ -750,5 +763,3 @@ int main() {
     }
     return 0;
 }
-
-จากโค้ดนี่คุณช่วยถามคำถามอะไรก็ได้ สมมุติว่าคุณเป็นคนช่างสงสัย
