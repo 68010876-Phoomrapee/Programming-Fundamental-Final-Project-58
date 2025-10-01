@@ -265,7 +265,7 @@ void display_all() {
 // helper: find index by inspectionID or carReg (case-insensitive exact match); return -1 if not found
 int find_by_id_or_reg(Record arr[], int n, const char *key) {
     for (int i = 0; i < n; ++i) {
-        if (_stricmp(arr[i].inspectionID, key) == 0) return i;
+        if (_stricmp(arr[i].inspectionID, key) == 0) return i; // _stricmp for Windows , strcasecmp() for Linux/macOS
         if (_stricmp(arr[i].carReg, key) == 0) return i;
     }
     return -1;
@@ -713,3 +713,4 @@ int main() {
     }
     return 0;
 }
+
