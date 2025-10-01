@@ -178,8 +178,6 @@ int save_all(Record recs[], int n) {
     return 1;
 }
 
-/* ---------- Utility to read line from stdin and handle '0' for back ---------- */
-
 // read a line into buf, return 0 if user entered "0" EXACTLY (meaning back), else 1
 int input_line(char *prompt, char *buf, int bufsize) {
     while (1) {
@@ -392,7 +390,7 @@ void delete_record() {
     if (save_all(arr, n)) printf("Deleted and saved.\n"); else printf("Save failed.\n");
 }
 
-/* ---------- Unit tests (2 functions): is_valid_date & is_valid_id_or_reg ---------- */
+/* ---------- Unit tests (2 functions): add & delete ---------- */
 
 void unit_test_add() {
     printf("\n[Unit Test] add_record\n");
@@ -542,3 +540,4 @@ int main() {
     }
     return 0;
 }
+
