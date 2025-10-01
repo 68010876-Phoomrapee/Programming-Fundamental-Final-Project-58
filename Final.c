@@ -48,12 +48,7 @@ typedef struct {
 
 /* ---------- Validation helpers ---------- */
 
-// Convert string to lowercase for case-insensitive comparison
-void to_lower_str(char *str) {
-    for (char *p = str; *p; ++p) {
-        *p = tolower((unsigned char)*p);
-    }
-}
+// Removed to_lower_str as it will be replaced by _stricmp
 
 // return 1 if character allowed in ID/Reg (letters and digits)
 int is_alnum_char(char c) {
@@ -269,25 +264,9 @@ void display_all() {
 
 // helper: find index by inspectionID or carReg (case-insensitive exact match); return -1 if not found
 int find_by_id_or_reg(Record arr[], int n, const char *key) {
-    char lower_key[ID_REG_BUFFER_LEN];
-    strncpy(lower_key, key, sizeof(lower_key) - 1);
-    lower_key[sizeof(lower_key) - 1] = '\0';
-    to_lower_str(lower_key);
-
-    char lower_id[ID_REG_BUFFER_LEN];
-    char lower_reg[ID_REG_BUFFER_LEN];
-
     for (int i = 0; i < n; ++i) {
-        strncpy(lower_id, arr[i].inspectionID, sizeof(lower_id) - 1);
-        lower_id[sizeof(lower_id) - 1] = '\0';
-        to_lower_str(lower_id);
-
-        strncpy(lower_reg, arr[i].carReg, sizeof(lower_reg) - 1);
-        lower_reg[sizeof(lower_reg) - 1] = '\0';
-        to_lower_str(lower_reg);
-
-        if (strcmp(lower_id, lower_key) == 0) return i;
-        if (strcmp(lower_reg, lower_key) == 0) return i;
+        if (_stricmp(arr[i].inspectionID, key) == 0) return i;
+        if (_stricmp(arr[i].carReg, key) == 0) return i;
     }
     return -1;
 }
@@ -392,27 +371,9 @@ void search_record() {
     printf("--- Search by InspectionID or CarReg (type 0 to go back) ---\n");
     if (!input_line("Enter key: ", buf, sizeof(buf))) return;
 
-    // Convert search key to lowercase for case-insensitive comparison
-    char lower_search_key[ID_REG_BUFFER_LEN];
-    strncpy(lower_search_key, buf, sizeof(lower_search_key) - 1);
-    lower_search_key[sizeof(lower_search_key) - 1] = '\0';
-    to_lower_str(lower_search_key);
-
     int found = 0;
-    char lower_id[ID_REG_BUFFER_LEN];
-    char lower_reg[ID_REG_BUFFER_LEN];
-
     for (int i = 0; i < n; ++i) {
-        strncpy(lower_id, arr[i].inspectionID, sizeof(lower_id) - 1);
-        lower_id[sizeof(lower_id) - 1] = '\0';
-        to_lower_str(lower_id);
-
-        strncpy(lower_reg, arr[i].carReg, sizeof(lower_reg) - 1);
-        lower_reg[sizeof(lower_reg) - 1] = '\0';
-        to_lower_str(lower_reg);
-
-        // Case-insensitive exact match or substring match
-        if (strstr(lower_id, lower_search_key) || strstr(lower_reg, lower_search_key)) {
+        if (_stricmp(arr[i].inspectionID, buf) == 0 || _stricmp(arr[i].carReg, buf) == 0) {
             printf("Match: %s | %s | %s | %s\n", arr[i].inspectionID, arr[i].carReg, arr[i].owner, arr[i].date);
             found++;
         }
@@ -548,19 +509,8 @@ void delete_record() {
     if (!input_line("Enter InspectionID to delete: ", buf, sizeof(buf))) return;
 
     int idx = -1;
-    // Need a case-insensitive search for deletion as well
-    char lower_buf[ID_REG_BUFFER_LEN];
-    strncpy(lower_buf, buf, sizeof(lower_buf) - 1);
-    lower_buf[sizeof(lower_buf) - 1] = '\0';
-    to_lower_str(lower_buf);
-
-    char lower_id[ID_REG_BUFFER_LEN];
-
     for (int i = 0; i < n; ++i) {
-        strncpy(lower_id, arr[i].inspectionID, sizeof(lower_id) - 1);
-        lower_id[sizeof(lower_id) - 1] = '\0';
-        to_lower_str(lower_id);
-        if (strcmp(lower_id, lower_buf) == 0) {
+        if (_stricmp(arr[i].inspectionID, buf) == 0) {
             idx = i;
             break;
         }
