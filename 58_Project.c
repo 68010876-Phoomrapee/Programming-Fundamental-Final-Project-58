@@ -208,13 +208,14 @@ void ensure_csv_has_sample() {
     if (f) {
         fclose(f);
         return;
-    } // exists
+    }
+
     f = fopen(CSV_FILE, "w");
     if (!f) {
         perror("Cannot create CSV file");
         return;
     }
-    // Write 20 sample records (InspectionID,CarRegNumber,OwnerName,InspectionDate (DD/MM/YYYY))
+
     const char *samples[] = {
         "I001,ABC1234,John Doe,01/08/2025",
         "I002,XYZ5678,Jane Smith,03/08/2025",
@@ -237,9 +238,12 @@ void ensure_csv_has_sample() {
         "I019,SOL2233,Kunibert Schneider,06/09/2025",
         "I020,GEN8047,Leon Lee,08/09/2025"
     };
-    for (int i = 0; i < ID_REG_MAX_LEN; ++i) { // Use ID_REG_MAX_LEN for number of samples
+
+    size_t sample_count = sizeof(samples) / sizeof(samples[0]);
+    for (size_t i = 0; i < sample_count; ++i) {
         fprintf(f, "%s\n", samples[i]);
     }
+
     fclose(f);
 }
 
@@ -1250,3 +1254,4 @@ int main() {
         }
     }
 }
+
