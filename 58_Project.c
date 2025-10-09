@@ -836,6 +836,28 @@ void unit_test_search() {
     Record arr[MAX_RECORDS];
     int n = load_all(arr, MAX_RECORDS);
 
+     int has_I001 = 0;
+    for (int i = 0; i < n; ++i) {
+        if (strcmp(arr[i].inspectionID, "I001") == 0) {
+            has_I001 = 1;
+            break;
+        }
+    }
+
+    if (!has_I001) {
+        if (n < MAX_RECORDS) {
+            strcpy(arr[n].inspectionID, "I001");
+            strcpy(arr[n].carReg, "ABC1234");
+            strcpy(arr[n].owner, "John Doe");
+            strcpy(arr[n].date, "01/08/2025");
+            n++;
+            printf("    Created test record 'I001' because it was missing.\n");
+            save_all(arr, n);
+        } else {
+            printf("    Warning: MAX_RECORDS reached, cannot create 'I001'\n");
+        }
+    }
+
     // Test Case 1: Search by existing InspectionID (case-sensitive, should work)
     printf(" -> Test Case 1: Search by existing InspectionID 'I001' (case-sensitive)\n");
     int found_idx = -1;
@@ -920,16 +942,21 @@ void unit_test_delete() {
     arr[n++] = t3;
     save_all(arr, n);
 
-    auto void delete_record_test(const char* key, int confirm) {
-        int n = load_all(arr, MAX_RECORDS);
-        int idx = find_by_id_or_reg(arr, n, key);
-        if (idx == -1) return;
-        if (!confirm) return;
-        for (int i = idx; i < n - 1; i++) arr[i] = arr[i + 1];
-        n--;
-        save_all(arr, n);
+ void delete_record_test(const char* key, int confirm) {
+    int n = load_all(arr, MAX_RECORDS);
+    int idx = find_by_id_or_reg(arr, n, key);
+    if (idx == -1) {
+        return;
     }
-
+    if (!confirm) {
+        return;
+    }
+    for (int i = idx; i < n - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    n--;
+    save_all(arr, n);
+}
     // Test Case 1: Delete by existing InspectionID 'U001' (confirm Y)
     printf("\n -> Test Case 1: Delete by existing InspectionID 'U001' (confirm Y)'\n");
     delete_record_test("U001", 1);
