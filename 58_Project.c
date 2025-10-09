@@ -202,7 +202,7 @@ void fake_save_all(Record recs[], int n) {
     printf("[FAKE SAVE] Would save %d records.\n", n);
 }
 
-// If file doesn't exist, create and write sample data (20 records)
+// If file doesn't exist, create and write sample data
 void ensure_csv_has_sample() {
     FILE *f = fopen(CSV_FILE, "r");
     if (f) {
@@ -1254,4 +1254,5 @@ int main() {
         }
     }
 }
+
 
