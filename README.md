@@ -1,4 +1,66 @@
-# 🚙 โปรแกรมระบบจัดการข้อมูลการตรวจสอบรถยนต์
+# 🚙 Program ระบบจัดการข้อมูลการตรวจสอบรถยนต์
+
+## 🖥 วิธี Compile และ Run Program
+### 📦 Files Required
+  *ให้อยู่ใน Folder เดียวกัน*
+  - **58_Project.c**
+  
+  - **users_data.csv**
+
+### 1️⃣ รันจาก Terminal / Command Prompt
+
+**Windows (ใช้ GCC ผ่าน MinGW)**
+#### Compile
+```bash 
+gcc 58_Project.c -o 58_Project.exe
+```
+
+#### Run
+```bash
+.\58_Project.exe
+```
+
+### 2️⃣ สร้างและรันไฟล์ EXE (Windows)
+เปิด Command Prompt หรือ PowerShell
+
+ไปยัง Folder Program
+
+
+Compile ด้วย GCC:
+```bash 
+gcc 58_Project.c -o 58_Project.exe
+```
+จะได้ไฟล์ 58_Project.exe
+
+Run โดยการดับเบิ้ลคลิกไฟล์ 
+หรือเรียกจาก Command Prompt:
+```bash 
+.\58_Project.exe
+```
+### 3️⃣ รันโปรแกรมใน VS Code Terminal
+เปิด VS Code → เปิด Folder Program
+
+เปิด Terminal
+
+Compile:
+
+#### Windows
+```bash 
+gcc 58_Project.c -o 58_Project.exe
+```
+#### Linux/macOS
+```bash 
+gcc 58_Project.c -o 58_Project.out
+```
+Run:
+#### Windows
+```bash 
+.\58_Project.exe
+```
+#### Linux/macOS
+```bash 
+./58_Project.out
+```
 
 ---
 
@@ -54,64 +116,3 @@
 - **Clear Screen** – รองรับ **Windows (cls)** และ **Linux/macOS (clear)**  
 
 ---
-
-## 🖥 วิธี Compile และ Run โปรแกรม
-### 📦 Files Required
-  - **58_Project.c**
-  
-  - **users_data.csv**
-
-### 1️⃣ รันจาก Terminal / Command Prompt
-
-**Windows (ใช้ GCC ผ่าน MinGW)**
-#### Compile
-```bash 
-gcc 58_Project.c -o 58_Project.exe
-```
-
-#### Run
-```bash
-.\58_Project.exe
-```
-
-### 2️⃣ สร้างและรันไฟล์ EXE (Windows)
-เปิด Command Prompt หรือ PowerShell
-
-ไปยังโฟลเดอร์โปรแกรม
-
-
-Compile ด้วย GCC:
-```bash 
-gcc 58_Project.c -o 58_Project.exe
-```
-จะได้ไฟล์ 58_Project.exe
-
-Run โดยการดับเบิ้ลคลิกไฟล์ 
-หรือเรียกจาก Command Prompt:
-```bash 
-.\58_Project.exe
-```
-### 3️⃣ รันโปรแกรมใน VS Code Terminal
-เปิด VS Code → เปิดโฟลเดอร์โปรเจกต์
-
-เปิด Terminal
-
-Compile:
-
-#### Windows
-```bash 
-gcc 58_Project.c -o 58_Project.exe
-```
-#### Linux/macOS
-```bash 
-gcc 58_Project.c -o 58_Project.out
-```
-Run:
-#### Windows
-```bash 
-.\58_Project.exe
-```
-#### Linux/macOS
-```bash 
-./58_Project.out
-```
