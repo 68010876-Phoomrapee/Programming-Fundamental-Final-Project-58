@@ -1085,7 +1085,7 @@ void unit_test_menu() {
     while (1) {
         clear_screen();
         printf("-----------------------------------------------------\n");
-        printf("                 UNIT TEST MENU\n");
+        printf("                 UNIT TESTS MENU\n");
         printf("   (Type 0 at any prompt to go back to main menu)\n");
         printf("-----------------------------------------------------\n\n");
         
@@ -1133,7 +1133,7 @@ void unit_test_menu() {
                 printf("\nInvalid choice. Please select an option from the menu.\n"); 
                 break;
         }
-        printf("\nPress Enter to return to Unit Test Menu...");
+        printf("\nPress Enter to return to Unit Tests Menu...");
         while (getchar() != '\n' && !feof(stdin) && !ferror(stdin));
     }
 }
@@ -1167,7 +1167,7 @@ int main() {
         printf("2. Search Record\n");  
         printf("3. Update Record\n");  
         printf("4. Delete Record\n");  
-        printf("5. Unit Test\n");  
+        printf("5. Unit Tests\n");  
         printf("6. E2E Test\n");  
         printf("0. Exit\n");
         printf("\nEnter your choice: ");
